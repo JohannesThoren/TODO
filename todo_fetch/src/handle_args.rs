@@ -10,7 +10,7 @@ pub(crate) fn parse_ignore(ignore_string: &String) -> Result<Vec<String>, std::i
     let parsed_ignore: Vec<String> = ignore_string.split(" ").map(|v| v.to_string()).collect();
 
 
-    if(parsed_ignore[0] != "".to_string()) {
+    if parsed_ignore[0] != "".to_string() {
         pretty_print_ignore(&parsed_ignore);
     }
 

@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 use inline_colorization::*;
-use libtodo::{file::{self, File}, item::Item};
+use libtodo::{file::File, item::Item};
 
 fn pretty_print_filter(parsed_filter: &Vec<String>) {
     if parsed_filter.len() > 0 {

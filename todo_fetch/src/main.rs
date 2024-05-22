@@ -22,7 +22,7 @@ fn get_dir_content(
 
     let dir = fs::read_dir(path)?;
 
-    let mut entries = get_children(dir, hidden)?;
+    let entries = get_children(dir, hidden)?;
 
     if entries.is_some() {
         let mut entries = entries.unwrap();
