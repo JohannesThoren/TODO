@@ -1,0 +1,3 @@
+[workspace]
+members = ["todo_fetch", "todo_disp", "libtodo"]
+resolver = "2"
