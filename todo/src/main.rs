@@ -61,7 +61,4 @@ fn main() -> Result<(), std::io::Error> {
             display(input, filter)
         }
     };
-
-
-    Ok(())
 }

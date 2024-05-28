@@ -5,6 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/libtodo/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/todo_disp/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/todo_fetch/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/todo/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
