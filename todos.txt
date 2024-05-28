@@ -1,0 +1,8 @@
+.\libtodo\src\item.rs
+	- l:30    LOW     the colon should be a constant. 
+	- l:39    LOW     this one should be a constant 
+	- l:47    LOW     this one should be a constant 
+	- l:52    LOW     this two should be a constant 
+.\todo\src\main.rs
+	- l:25    HIGH    implement a export command. 
+	- l:54    MEDIUM  implement the functionality for the md and html targets 

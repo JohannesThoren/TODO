@@ -1,8 +1,9 @@
 use std::fs::File;
-use std::io::BufReader;
+use std::io::{BufReader, Error};
 use libtodo::file::SourceFile;
 use libtodo::item::Item;
 use inline_colorization::*;
+
 fn pretty_print_filter(parsed_filter: &Vec<String>) {
     if parsed_filter.len() > 0 {
         println!("┌Filter");
@@ -17,7 +18,6 @@ fn pretty_print_filter(parsed_filter: &Vec<String>) {
 }
 
 
-// TODO medium : fixme
 fn parse_filter(filter_string: &String) -> Result<Vec<String>, std::io::Error> {
     let parsed_filter: Vec<String> = filter_string.split(" ").map(|v| v.to_string().to_ascii_uppercase()).collect();
 
@@ -58,12 +58,7 @@ pub(crate) fn handle_filter(
 
 
 pub(crate) fn display(input: String, filter: String) -> Result<(), std::io::Error> {
-    let f = File::open(input)?;
-    let r = BufReader::new(f);
-    let json: Vec<libtodo::file::SourceFile> = serde_json::from_reader(r)?;
-
-
-    let filtered = handle_filter(json, filter);
+    let filtered = parse_source_files(input, filter)?;
 
     for f in filtered? {
         println!("┌File: {color_green}{}{color_reset}", f.path);
@@ -89,4 +84,14 @@ pub(crate) fn display(input: String, filter: String) -> Result<(), std::io::Erro
         }
     }
     Ok(())
+}
+
+pub(crate) fn parse_source_files(input: String, filter: String) -> Result<Result<Vec<SourceFile>, Error>, Error> {
+    let f = File::open(input)?;
+    let r = BufReader::new(f);
+    let json: Vec<libtodo::file::SourceFile> = serde_json::from_reader(r)?;
+
+
+    let filtered = handle_filter(json, filter);
+    Ok(filtered)
 }

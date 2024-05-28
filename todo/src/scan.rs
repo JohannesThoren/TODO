@@ -3,7 +3,6 @@ use libtodo::dir::read_dir;
 use libtodo::file::SourceFile;
 use inline_colorization::*;
 
-// todo high: Test this shit
 pub(crate) fn scan(path: String, allow_hidden: &bool, ignore: String, comment_prefixes: String, output: String, config: bool) -> Result<(), std::io::Error> {
     let ignore: Vec<String> = ignore.split(" ").map(|v| v.to_string()).collect();
 

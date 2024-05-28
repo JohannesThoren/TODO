@@ -1,12 +1,16 @@
-// Copyright 2024 Johannes Thorén. All rights reserved.
-// Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file.
+/******************************************************************************
+ * Copyright (c) 2024 Johannes Thorén. All rights reserved.                   *
+ * SPDX-License-Identifier: BSD-4-Clause                                      *
+ ******************************************************************************/
 
 mod scan;
 mod display;
+mod export;
 
+use std::process::Output;
 use clap::{Parser, Subcommand};
 use crate::display::display;
+use crate::export::export;
 use crate::scan::scan;
 
 #[derive(Parser, Debug)]
@@ -18,6 +22,8 @@ pub struct Args {
 
 #[derive(Subcommand, Debug)]
 pub enum Commands {
+    // todo high: implement a export command.
+    // the export command should allow the user to export the todos to html or md or raw text
     SCAN {
         #[arg(short, long, default_value_t = String::from("."))]
         root: String,
@@ -44,6 +50,21 @@ pub enum Commands {
         #[arg(short, long, default_value_t = String::from("todos.json"))]
         input: String,
     },
+
+    // todo medium : implement the functionality for the md and html targets
+    EXPORT {
+        #[command(subcommand)]
+        target: export::ExportTarget,
+
+        #[arg(short, long, default_value_t = String::from("high medium low tbd"))]
+        filter: String,
+
+        #[arg(short, long, default_value_t = String::from("todos.json"))]
+        input: String,
+
+        #[arg(short, long)]
+        output: Option<String>,
+    },
 }
 
 
@@ -54,11 +75,11 @@ fn main() -> Result<(), std::io::Error> {
         Commands::SCAN { root, output, ignore, comment_prefixes, hidden, config } => {
             scan(root, &hidden, ignore, comment_prefixes, output, config)
         }
-        /*
-        * todo high: fix display!!!
-        */
         Commands::DISPLAY { filter, input } => {
             display(input, filter)
+        }
+        Commands::EXPORT { target, filter, input, output } => {
+            export(target, input, filter, output)
         }
     };
 }

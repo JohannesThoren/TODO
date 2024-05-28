@@ -27,6 +27,7 @@ impl Item {
 
 
     pub fn from_comment(comment: &String, line: usize, comment_prefixes: Vec<&str>) -> Option<Item> {
+        // todo low: the colon should be a constant.
         let split: Vec<String> = comment.split(":").map(|v| v.to_string()).collect();
         let todo: &String = &split[0];
         let todo_vec: Vec<String> = todo
@@ -35,16 +36,20 @@ impl Item {
             .map(|v| v.to_string())
             .collect();
 
+        // todo low: this one should be a constant
         if todo_vec.len() < 1 {
             return None
         }
 
         if todo_vec[0].to_ascii_lowercase() == TODO_IDENTIFIER {
             let mut prio = Priority::TBD;
+
+            // todo low: this one should be a constant
             if todo_vec.len() > 1 {
                 prio = Priority::from(&todo_vec[1]).unwrap();
             }
 
+            // todo low: this two should be a constant
             if split.len() < 2 {
                 return None;
             }
