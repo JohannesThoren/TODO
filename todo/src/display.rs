@@ -1,8 +1,8 @@
-use std::fs::File;
-use std::io::{BufReader, Error};
+use inline_colorization::*;
 use libtodo::file::SourceFile;
 use libtodo::item::Item;
-use inline_colorization::*;
+use std::fs::File;
+use std::io::{BufReader, Error};
 
 fn pretty_print_filter(parsed_filter: &Vec<String>) {
     if parsed_filter.len() > 0 {
@@ -17,9 +17,11 @@ fn pretty_print_filter(parsed_filter: &Vec<String>) {
     }
 }
 
-
 fn parse_filter(filter_string: &String) -> Result<Vec<String>, std::io::Error> {
-    let parsed_filter: Vec<String> = filter_string.split(" ").map(|v| v.to_string().to_ascii_uppercase()).collect();
+    let parsed_filter: Vec<String> = filter_string
+        .split(" ")
+        .map(|v| v.to_string().to_ascii_uppercase())
+        .collect();
 
     if parsed_filter[0] != "".to_string() {
         pretty_print_filter(&parsed_filter);
@@ -44,53 +46,42 @@ pub(crate) fn handle_filter(
             .map(|v| v.clone())
             .collect();
 
-
         if todos.len() > 0 {
-            filtred_vec.push(
-                SourceFile { path: f.path, todos: todos }
-            )
+            filtred_vec.push(SourceFile {
+                path: f.path,
+                todos: todos,
+            })
         }
     }
 
-
     Ok(filtred_vec)
 }
-
 
 pub(crate) fn display(input: String, filter: String) -> Result<(), std::io::Error> {
     let filtered = parse_source_files(input, filter)?;
 
     for f in filtered? {
-        println!("┌File: {color_green}{}{color_reset}", f.path);
-
-        for (n, todo) in f.todos.clone().iter().enumerate() {
-            if n == f.todos.len() - 1 {
-                println!(
-                    "└─ {}{:<8}{color_reset} L:{color_green}{:<6}{color_reset} - {}",
-                    todo.priority.get_color(),
-                    todo.priority.to_string(),
-                    todo.line,
-                    todo.description
-                )
-            } else {
-                println!(
-                    "├─ {}{:<8}{color_reset} L:{color_green}{:<6}{color_reset} - {}",
-                    todo.priority.get_color(),
-                    todo.priority.to_string(),
-                    todo.line,
-                    todo.description
-                )
-            }
+        for todo in f.todos.clone() {
+            println!(
+                "- {}{:<8}{color_reset} {:>32}:{color_green}{:<6}{color_reset} - {}",
+                todo.priority.get_color(),
+                todo.priority.to_string(),
+                f.path,
+                todo.line,
+                todo.description
+            )
         }
     }
     Ok(())
 }
 
-pub(crate) fn parse_source_files(input: String, filter: String) -> Result<Result<Vec<SourceFile>, Error>, Error> {
+pub(crate) fn parse_source_files(
+    input: String,
+    filter: String,
+) -> Result<Result<Vec<SourceFile>, Error>, Error> {
     let f = File::open(input)?;
     let r = BufReader::new(f);
     let json: Vec<libtodo::file::SourceFile> = serde_json::from_reader(r)?;
-
 
     let filtered = handle_filter(json, filter);
     Ok(filtered)

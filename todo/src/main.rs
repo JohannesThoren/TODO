@@ -3,15 +3,15 @@
  * SPDX-License-Identifier: BSD-4-Clause                                      *
  ******************************************************************************/
 
-mod scan;
 mod display;
 mod export;
+mod scan;
 
-use std::process::Output;
-use clap::{Parser, Subcommand};
 use crate::display::display;
 use crate::export::export;
 use crate::scan::scan;
+use clap::{Parser, Subcommand};
+use std::process::Output;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None, arg_required_else_help = true)]
@@ -22,7 +22,7 @@ pub struct Args {
 
 #[derive(Subcommand, Debug)]
 pub enum Commands {
-    // todo high: implement a export command.
+    // TODO high: implement an export command.
     // the export command should allow the user to export the todos to html or md or raw text
     SCAN {
         #[arg(short, long, default_value_t = String::from("."))]
@@ -67,19 +67,24 @@ pub enum Commands {
     },
 }
 
-
 fn main() -> Result<(), std::io::Error> {
     let args = Args::parse();
 
     return match args.commands {
-        Commands::SCAN { root, output, ignore, comment_prefixes, hidden, config } => {
-            scan(root, &hidden, ignore, comment_prefixes, output, config)
-        }
-        Commands::DISPLAY { filter, input } => {
-            display(input, filter)
-        }
-        Commands::EXPORT { target, filter, input, output } => {
-            export(target, input, filter, output)
-        }
+        Commands::SCAN {
+            root,
+            output,
+            ignore,
+            comment_prefixes,
+            hidden,
+            config,
+        } => scan(root, &hidden, ignore, comment_prefixes, output, config),
+        Commands::DISPLAY { filter, input } => display(input, filter),
+        Commands::EXPORT {
+            target,
+            filter,
+            input,
+            output,
+        } => export(target, input, filter, output),
     };
 }
