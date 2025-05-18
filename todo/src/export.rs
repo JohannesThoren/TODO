@@ -2,13 +2,10 @@
  * Copyright (c) 2024 Johannes Thorén. All rights reserved.                   *
  * SPDX-License-Identifier: BSD-4-Clause                                      *
  ******************************************************************************/
-use std::fmt::format;
-use std::fs;
-use std::process::Output;
-use clap::builder::Str;
+use crate::display::parse_source_files;
 use clap::Subcommand;
 use libtodo::file::SourceFile;
-use crate::display::parse_source_files;
+use std::fs;
 
 #[derive(Debug, Subcommand)]
 pub(crate) enum ExportTarget {
@@ -17,9 +14,13 @@ pub(crate) enum ExportTarget {
     TEXT,
 }
 
-pub(crate) fn export(target: ExportTarget, input: String, filter: String, output: Option<String>) -> Result<(), std::io::Error> {
+pub(crate) fn export(
+    target: ExportTarget,
+    input: String,
+    filter: String,
+    output: Option<String>,
+) -> Result<(), std::io::Error> {
     let filtred = parse_source_files(input, filter)??;
-
 
     match target {
         ExportTarget::MD => {}
@@ -42,7 +43,15 @@ pub fn text(source_files: Vec<SourceFile>) -> Result<String, std::io::Error> {
         res.push_str(format!("{}\n", sf.path).as_str());
 
         for todos in sf.todos {
-            res.push_str(format!("\t- l:{:<5} {:<7} {} \n", todos.line, todos.priority.to_string(), todos.description).as_str())
+            res.push_str(
+                format!(
+                    "\t- l:{:<5} {:<7} {} \n",
+                    todos.line,
+                    todos.priority.to_string(),
+                    todos.description
+                )
+                .as_str(),
+            )
         }
     }
 

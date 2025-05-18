@@ -11,7 +11,6 @@ use crate::display::display;
 use crate::export::export;
 use crate::scan::scan;
 use clap::{Parser, Subcommand};
-use std::process::Output;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None, arg_required_else_help = true)]

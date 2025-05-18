@@ -8,9 +8,9 @@ fn pretty_print_filter(parsed_filter: &Vec<String>) {
     if parsed_filter.len() > 0 {
         print!("Filter: ");
         for pi in parsed_filter.clone() {
-            print!("{} ", pi)
+            print!("{color_green}{}{color_reset} ", pi)
         }
-        println!("")
+        println!()
     }
 }
 
