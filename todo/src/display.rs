@@ -6,14 +6,11 @@ use std::io::{BufReader, Error};
 
 fn pretty_print_filter(parsed_filter: &Vec<String>) {
     if parsed_filter.len() > 0 {
-        println!("┌Filter");
-        for (n, pi) in parsed_filter.clone().into_iter().enumerate() {
-            if n == (parsed_filter.len() - 1) {
-                println!("└─{color_green}{}{color_reset}", pi)
-            } else {
-                println!("├─{color_green}{}{color_reset}", pi)
-            }
+        print!("Filter: ");
+        for pi in parsed_filter.clone() {
+            print!("{} ", pi)
         }
+        println!("")
     }
 }
 
